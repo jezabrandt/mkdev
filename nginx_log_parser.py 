@@ -1,0 +1,14 @@
+file_log = open('nginx.log', 'r')
+req_500 = open('nginx_500.log', 'w')
+req_200 = 0
+ip = set()
+for line in file_log.readlines()[:-1]:
+    line_list = line.strip('\n').replace('"','').split(' ')
+    ip.add(line_list[0])
+    if line_list[8] == '500':
+        req_500.write(line + '\n')
+    if line_list[8] == '200' and line_list[5] == 'GET':
+        req_200 += 1
+print(req_200)            
+print(', '.join(ip))
+req_500.close()
